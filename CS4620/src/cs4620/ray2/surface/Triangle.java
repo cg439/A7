@@ -117,7 +117,7 @@ public class Triangle extends Surface {
 			}
 			
 			outRecord.normal.set(tMat.mulDir(outRecord.normal));
-			outRecord.location.set(tMat.mulDir(outRecord.location));
+			outRecord.location.set(tMat.mulPos(outRecord.location));
 			outRecord.normal.normalize();
 			if (owner.hasUVs()) {
 				outRecord.texCoords.setZero()

@@ -73,8 +73,9 @@ public class Box extends Surface {
 		// Hint: The bounding box is not the same as just minPt and maxPt,
 		// because
 		// this object can be transformed by a transformation matrix.
-
-
+		minBound.set(tMat.mulPos(minPt));
+		maxBound.set(tMat.mulPos(maxPt));
+		averagePosition.set(tMat.mulPos(minPt.clone().add(maxPt).div(2f)));
 	}
 
 	public boolean intersect(IntersectionRecord outRecord, Ray ray) {

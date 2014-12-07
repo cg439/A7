@@ -98,7 +98,7 @@ public class Sphere extends Surface {
 			double v = (theta - Math.PI / 2) / Math.PI;
 			outRecord.texCoords.set(u, v);
 			outRecord.normal.set(tMat.mulDir(outRecord.normal));
-			outRecord.location.set(tMat.mulDir(outRecord.location));
+			outRecord.location.set(tMat.mulPos(outRecord.location));
 		}
 
 		return true;
@@ -107,8 +107,13 @@ public class Sphere extends Surface {
 	public void computeBoundingBox() {
 		// TODO#A7: Compute the bounding box and store the result in
 		// averagePosition, minBound, and maxBound.
-
-
+		Vector3d minPt = new Vector3d();
+		Vector3d maxPt = new Vector3d();
+		
+		
+		minBound.set(tMat.mulPos(minPt));
+		maxBound.set(tMat.mulPos(maxPt));
+		averagePosition.set(tMat.mulPos(minPt.clone().add(maxPt).div(2f)));
 	}
 
 	/**

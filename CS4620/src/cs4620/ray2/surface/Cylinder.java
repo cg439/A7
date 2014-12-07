@@ -141,12 +141,13 @@ public class Cylinder extends Surface {
 		      outRecord.surface = this;
 
 		    }
-		    outRecord.normal.set(tMatInv.mulDir(outRecord.normal));
-			outRecord.location.set(tMatInv.mulDir(outRecord.location));
+		    outRecord.normal.set(tMat.mulDir(outRecord.normal));
+			outRecord.location.set(tMat.mulDir(outRecord.location));
 		    return true;
 		  }
 
 	public void computeBoundingBox() {
+		
 		// TODO#A7: Compute the bounding box and store the result in
 		// averagePosition, minBound, and maxBound.
 		// Hint: The bounding box may be transformed by a transformation matrix.

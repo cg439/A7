@@ -97,8 +97,8 @@ public class Sphere extends Surface {
 			double u = (phi + Math.PI) / (2 * Math.PI);
 			double v = (theta - Math.PI / 2) / Math.PI;
 			outRecord.texCoords.set(u, v);
-			outRecord.normal.set(tMatInv.mulDir(outRecord.normal));
-			outRecord.location.set(tMatInv.mulDir(outRecord.location));
+			outRecord.normal.set(tMat.mulDir(outRecord.normal));
+			outRecord.location.set(tMat.mulDir(outRecord.location));
 		}
 
 		return true;

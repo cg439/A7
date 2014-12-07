@@ -116,8 +116,8 @@ public class Triangle extends Surface {
 						.addMultiple(gamma, owner.getNormal(index.z));
 			}
 			
-			outRecord.normal.set(tMatInv.mulDir(outRecord.normal));
-			outRecord.location.set(tMatInv.mulDir(outRecord.location));
+			outRecord.normal.set(tMat.mulDir(outRecord.normal));
+			outRecord.location.set(tMat.mulDir(outRecord.location));
 			outRecord.normal.normalize();
 			if (owner.hasUVs()) {
 				outRecord.texCoords.setZero()

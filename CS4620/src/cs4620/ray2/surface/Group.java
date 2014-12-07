@@ -34,10 +34,17 @@ public class Group extends Surface {
     // TODO#A7: Compute tMat, tMatInv, tMatTInv using transformMat.
     // Hint: We apply the transformation from bottom up the tree. 
     // i.e. The child's transformation will be applied to objects before its parent's.
-	    
-    
+	    Matrix4d updatedTMat = new Matrix4d();
+	    pMat.mulBefore(transformMat, updatedTMat);
+	    Matrix4d updatedTMatInv = updatedTMat.clone().invert();
+	    Matrix4d updatedTMatTInv = updatedTMatInv.clone().transpose();
+	    tMat.set(updatedTMat);
+	    tMatInv.set(updatedTMatInv);
+	    tMatTInv.set(updatedTMatTInv);
     // TODO#A7: Call setTransformation(tMat, tMatInv, tMatTInv) on each of the children.
-
+	  for(Surface a : this.objs) {
+		  a.setTransformation(tMat, tMatInv, tMatTInv);
+	  }
 	
 	  computeBoundingBox();
   }

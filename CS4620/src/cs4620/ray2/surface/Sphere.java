@@ -47,7 +47,7 @@ public class Sphere extends Surface {
 	  	//transform the resulting intersection point and normal to world space
 
 		//transform the ray into object space
-		Ray ray = rayIn;
+		Ray ray = untransformRay(rayIn);
 		
 		// Rename the common vectors so I don't have to type so much
 		Vector3d d = ray.direction;
@@ -97,8 +97,9 @@ public class Sphere extends Surface {
 			double u = (phi + Math.PI) / (2 * Math.PI);
 			double v = (theta - Math.PI / 2) / Math.PI;
 			outRecord.texCoords.set(u, v);
-			
-			}
+			outRecord.normal.set(tMatInv.mulDir(outRecord.normal));
+			outRecord.location.set(tMatInv.mulDir(outRecord.location));
+		}
 
 		return true;
 	}

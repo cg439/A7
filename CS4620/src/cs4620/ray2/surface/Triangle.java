@@ -66,7 +66,7 @@ public class Triangle extends Surface {
 	  	//TODO#A7: Modify the intersect method: transform the ray to object space
 	  	//transform the resulting intersection point and normal to world space
 
-		Ray ray = rayIn;		
+		Ray ray = untransformRay(rayIn);		
 		
 		Vector3d v0 = owner.getPosition(index.x).clone();
 		
@@ -116,7 +116,8 @@ public class Triangle extends Surface {
 						.addMultiple(gamma, owner.getNormal(index.z));
 			}
 			
-			
+			outRecord.normal.set(tMatInv.mulDir(outRecord.normal));
+			outRecord.location.set(tMatInv.mulDir(outRecord.location));
 			outRecord.normal.normalize();
 			if (owner.hasUVs()) {
 				outRecord.texCoords.setZero()

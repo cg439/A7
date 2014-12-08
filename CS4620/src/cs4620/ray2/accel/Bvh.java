@@ -66,8 +66,10 @@ public class Bvh implements AccelStruct {
 		else if (node.child[0] == null && node.child[1] == null) {
 			for (int i = node.surfaceIndexStart; i < node.surfaceIndexEnd; i++) {
 				Surface current = surfaces[i];
-				boolean intersected = current.intersect(outRecord, rayIn);
+				IntersectionRecord tempRecord = new IntersectionRecord();
+				boolean intersected = current.intersect(tempRecord, rayIn);
 				if (intersected && anyIntersection) {
+					
 					return true;
 				}
 				else if (intersected) {
@@ -76,9 +78,29 @@ public class Bvh implements AccelStruct {
 			}
 		}
 		else {
-			boolean left = intersectHelper(node.child[0], outRecord, rayIn, anyIntersection);
-			boolean right = intersectHelper(node.child[1], outRecord, rayIn, anyIntersection);
+			IntersectionRecord out1 = new IntersectionRecord();
+			//out1.set(outRecord);
+			IntersectionRecord out2 = new IntersectionRecord();
+			//out2.set(outRecord);
+			boolean left = intersectHelper(node.child[0], out1, rayIn, anyIntersection);
+			boolean right = intersectHelper(node.child[1], out2, rayIn, anyIntersection);
+//			boolean left = intersectHelper(node.child[0], outRecord, rayIn, anyIntersection);
+//			boolean right = intersectHelper(node.child[1], outRecord, rayIn, anyIntersection);
 			ret = left || right;
+			if (left && right) {
+				if (out1.t < out2.t) {
+					outRecord.set(out1);
+				}
+				else {
+					outRecord.set(out2);
+				}
+			}
+			else if (left) {
+				outRecord.set(out1);
+			}
+			else if (right) {
+				outRecord.set(out2);
+			}
 		}
 		return ret;
 	}

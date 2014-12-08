@@ -44,7 +44,7 @@ public class Group extends Surface {
 	    tMat = transformMat.clone().mulAfter(pMat);
 	    System.out.println(tMat);
 	    tMatInv = tMat.clone().invert();
-	    tMatTInv = tMat.clone().transpose().invert();
+	    tMatTInv = tMatInv.clone().transpose();
 	   // tMatTInv = tMat.clone().transpose().invert();
 	 //   tMatInv = tMat.clone().invert();
 	    /*pMat.mulBefore(transformMat, updatedTMat);

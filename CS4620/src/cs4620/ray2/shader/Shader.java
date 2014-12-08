@@ -67,6 +67,40 @@ public abstract class Shader {
 		//TODO#A7 compute the fresnel term using the equation in the lecture
 
 		double R = 1;
+		double Fp = 0;
+		double Fs = 0;
+		double theta1 = 0;
+		double theta2 = 0;
+		double n1 = 0;
+		double n2 = 0;
+		double nDotv = normal.dot(outgoing);
+		
+		if(nDotv > 0){
+			n1 = 1;
+			n2 = refractiveIndex;
+			theta1 = Math.acos(nDotv);
+			theta2 = Math.asin( (n1*Math.sin(theta1)) / n2);
+		}
+		else if(nDotv < 0){
+			n1 = refractiveIndex;
+			n2 = 1;
+			Vector3d negNorm = normal.clone().negate();
+			theta1 = Math.acos(negNorm.dot(outgoing));
+			theta2 = Math.asin( (n1*Math.sin(theta1)) / n2);
+		}
+		
+		Fp = ( n2*Math.cos(theta1) - n1*Math.cos(theta2) ) / ( n2*Math.cos(theta1) + n1*Math.cos(theta2) );
+		Fs = ( n1*Math.cos(theta1) - n2*Math.cos(theta2) ) / ( n1*Math.cos(theta1) + n2*Math.cos(theta2) );
+		
+		R = (Math.pow(Fp, 2) + Math.pow(Fs, 2))/2;
+		
+		if(R>1){
+			R = 1;
+		}
+		else if(R<0){
+			R = 0;
+		}
+		
 		return R;
 	}
 }

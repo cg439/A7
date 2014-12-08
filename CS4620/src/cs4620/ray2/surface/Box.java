@@ -73,9 +73,28 @@ public class Box extends Surface {
 		// Hint: The bounding box is not the same as just minPt and maxPt,
 		// because
 		// this object can be transformed by a transformation matrix.
-		minBound.set(tMat.mulPos(minPt));
-		maxBound.set(tMat.mulPos(maxPt));
-		averagePosition.set(tMat.mulPos(minPt.clone().add(maxPt).div(2f)));
+		float minX = (float) (minPt.x);
+		float minY = (float) (minPt.y);
+		float minZ = (float) (minPt.z);
+		float maxX = (float) (maxPt.x);
+		float maxY = (float) (maxPt.y);
+		float maxZ = (float) (maxPt.z);
+		Vector3d p1 = new Vector3d(minX, minY, minZ);
+		Vector3d p2 = new Vector3d(minX, maxY, minZ);
+		Vector3d p3 = new Vector3d(minX, minY, maxZ);
+		Vector3d p4 = new Vector3d(minX, maxY, maxZ);
+		Vector3d p5 = new Vector3d(maxX, minY, maxZ);
+		Vector3d p6 = new Vector3d(maxX, minY, minZ);
+		Vector3d p7 = new Vector3d(maxX, maxY, minZ);
+		Vector3d p8 = new Vector3d(maxX, maxY, maxZ);
+		
+		Vector3d minPt = new Vector3d();
+		Vector3d maxPt = new Vector3d();
+		getMinMax(minPt, maxPt, p1, p2, p3, p4, p5, p6, p7, p8);
+		
+		minBound.set(minPt);
+		maxBound.set(maxPt);
+		averagePosition.set(minPt.clone().add(maxPt).div(2f));
 	}
 
 	public boolean intersect(IntersectionRecord outRecord, Ray ray) {

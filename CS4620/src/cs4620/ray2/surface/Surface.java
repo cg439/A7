@@ -95,7 +95,7 @@ public abstract class Surface {
 		in.add(this);
 	}
 	
-	public void getMinMax(Vector3d max, Vector3d min, Vector3d p1, Vector3d p2, Vector3d p3, Vector3d p4, Vector3d p5, Vector3d p6, Vector3d p7, Vector3d p8) {
+	public void getMinMax(Vector3d min, Vector3d max, Vector3d p1, Vector3d p2, Vector3d p3, Vector3d p4, Vector3d p5, Vector3d p6, Vector3d p7, Vector3d p8) {
 		tMat.mulPos(p1);
 		tMat.mulPos(p2);
 		tMat.mulPos(p3);
@@ -104,18 +104,18 @@ public abstract class Surface {
 		tMat.mulPos(p6);
 		tMat.mulPos(p7);
 		tMat.mulPos(p8);
-		float minX = (float) getMin(Integer.MAX_VALUE, p1.x, p2.x, p3.x, p4.x, p5.x, p6.x, p7.x, p8.x);
-		float minY = (float) getMin(Integer.MAX_VALUE, p1.y, p2.y, p3.y, p4.y, p5.y, p6.y, p7.y, p8.y);
-		float minZ = (float) getMin(Integer.MAX_VALUE, p1.z, p2.z, p3.z, p4.z, p5.z, p6.z, p7.z, p8.z);
-		float maxX = (float) getMax(Integer.MIN_VALUE, p1.x, p2.x, p3.x, p4.x, p5.x, p6.x, p7.x, p8.x);
-		float maxY = (float) getMax(Integer.MIN_VALUE, p1.y, p2.y, p3.y, p4.y, p5.y, p6.y, p7.y, p8.y);
-		float maxZ = (float) getMax(Integer.MIN_VALUE, p1.z, p2.z, p3.z, p4.z, p5.z, p6.z, p7.z, p8.z);
+		float minX = (float) getMin(Double.POSITIVE_INFINITY, p1.x, p2.x, p3.x, p4.x, p5.x, p6.x, p7.x, p8.x);
+		float minY = (float) getMin(Double.POSITIVE_INFINITY, p1.y, p2.y, p3.y, p4.y, p5.y, p6.y, p7.y, p8.y);
+		float minZ = (float) getMin(Double.POSITIVE_INFINITY, p1.z, p2.z, p3.z, p4.z, p5.z, p6.z, p7.z, p8.z);
+		float maxX = (float) getMax(Double.NEGATIVE_INFINITY, p1.x, p2.x, p3.x, p4.x, p5.x, p6.x, p7.x, p8.x);
+		float maxY = (float) getMax(Double.NEGATIVE_INFINITY, p1.y, p2.y, p3.y, p4.y, p5.y, p6.y, p7.y, p8.y);
+		float maxZ = (float) getMax(Double.NEGATIVE_INFINITY, p1.z, p2.z, p3.z, p4.z, p5.z, p6.z, p7.z, p8.z);
 		max.set(new Vector3d(maxX, maxY, maxZ));
 		min.set(new Vector3d(minX, minY, minZ));
 	}
 	
 	
-	private double getMin(float init, double x, double x2, double x3, double x4, double x5, double x6, double x7, double x8) {
+	private double getMin(double init, double x, double x2, double x3, double x4, double x5, double x6, double x7, double x8) {
 		double min = init;
 		if (x < min) {
 			min = x;
@@ -144,7 +144,7 @@ public abstract class Surface {
 		return min;
 	}
 	
-	private double getMax(float init, double x, double x2, double x3, double x4, double x5, double x6, double x7, double x8) {
+	private double getMax(double init, double x, double x2, double x3, double x4, double x5, double x6, double x7, double x8) {
 		double max = init;
 		if (x > max) {
 			max = x;

@@ -123,11 +123,13 @@ public class Sphere extends Surface {
 		Vector3d p8 = new Vector3d(maxX, maxY, maxZ);
 		
 		
-		Vector3d minPt = new Vector3d(minX, minY, minZ);
-		Vector3d maxPt = new Vector3d(maxX, maxY, maxZ);
-		minBound.set(tMat.mulPos(minPt));
-		maxBound.set(tMat.mulPos(maxPt));
-		averagePosition.set(tMat.mulPos(center.clone()));
+		Vector3d minPt = new Vector3d();
+		Vector3d maxPt = new Vector3d();
+		getMinMax(minPt, maxPt, p1, p2, p3, p4, p5, p6, p7, p8);
+		
+		minBound.set(minPt);
+		maxBound.set(maxPt);
+		averagePosition.set(minPt.clone().add(maxPt).div(2f));
 	}
 
 	/**

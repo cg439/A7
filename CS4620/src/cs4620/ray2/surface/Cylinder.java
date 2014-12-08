@@ -151,10 +151,29 @@ public class Cylinder extends Surface {
 		// TODO#A7: Compute the bounding box and store the result in
 		// averagePosition, minBound, and maxBound.
 		// Hint: The bounding box may be transformed by a transformation matrix.
-
-		minBound.set(tMat.mulPos(minPt));
-		maxBound.set(tMat.mulPos(maxPt));
-		averagePosition.set(tMat.mulPos(center.clone()));
+		float minX = (float) (center.x - radius);
+		float minY = (float) (center.y - radius);
+		float minZ = (float) (center.z - height/2);
+		float maxX = (float) (center.x + radius);
+		float maxY = (float) (center.y + radius);
+		float maxZ = (float) (center.z + height/2);
+		Vector3d p1 = new Vector3d(minX, minY, minZ);
+		Vector3d p2 = new Vector3d(minX, maxY, minZ);
+		Vector3d p3 = new Vector3d(minX, minY, maxZ);
+		Vector3d p4 = new Vector3d(minX, maxY, maxZ);
+		Vector3d p5 = new Vector3d(maxX, minY, maxZ);
+		Vector3d p6 = new Vector3d(maxX, minY, minZ);
+		Vector3d p7 = new Vector3d(maxX, maxY, minZ);
+		Vector3d p8 = new Vector3d(maxX, maxY, maxZ);
+		
+		
+		Vector3d minPt = new Vector3d();
+		Vector3d maxPt = new Vector3d();
+		getMinMax(minPt, maxPt, p1, p2, p3, p4, p5, p6, p7, p8);
+		
+		minBound.set(minPt);
+		maxBound.set(maxPt);
+		averagePosition.set(minPt.clone().add(maxPt).div(2f));
 	}
 
 	/**

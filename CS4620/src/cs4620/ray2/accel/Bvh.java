@@ -126,7 +126,6 @@ public class Bvh implements AccelStruct {
 		double xDif = maxB.x - minB.x;
 		double yDif = maxB.y - minB.y;
 		double zDif = maxB.z - minB.z;
-		int widestDim = -1;
 		if (xDif <= yDif && zDif <= yDif) {
 			cmp.setIndex(1);
 		}
@@ -143,11 +142,13 @@ public class Bvh implements AccelStruct {
 
 		// ==== Step 5 ====
 		// Recursively create left and right children.
-
+		int mid = (start + end)/2;
 		
+		BvhNode left = createTree(start, mid);
+		BvhNode right = createTree(mid, end);
 		
+		return new BvhNode(minB, maxB, left, right, start, end);
 	}
-
 }
 
 /**

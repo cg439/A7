@@ -51,7 +51,9 @@ public class Glazed extends Shader {
 	@Override
 	public void shade(Colord outIntensity, Scene scene, Ray ray, IntersectionRecord record, int depth) {
 		// TODO#A7: fill in this function.
-		
+		outIntensity.setZero();
+		Colord intensity = new Colord();
+		substrate.shade(intensity, scene, ray, record, depth);
 
 	}
 }

@@ -77,8 +77,8 @@ public class BvhNode {
 		return child[0] == null && child[1] == null; 
 	}
 	
-	public boolean intersectsSlab(double xMin, double xMax, double xE, double xD, double yMin, double yMax,  double yE, double yD) {
-		double tXMin, tXMax, tYMin, tYMax;
+	public boolean intersectsSlab(double xMin, double xMax, double xE, double xD, double yMin, double yMax,  double yE, double yD, double zMin, double zMax, double zE, double zD) {
+		double tXMin, tXMax, tYMin, tYMax, tZMin, tZMax;
 		if (xD >= 0) {
 			tXMin = (xMin - xE)/xD;
 			tXMax = (xMax - xE)/xD;
@@ -98,10 +98,24 @@ public class BvhNode {
 		if (tXMin > tYMax || tYMin > tXMax) {
 			return false;
 		}
-		else {
-			return true;
+		if (tYMin > tXMin) {
+			tXMin = tYMin;
 		}
-		
+		if (tYMax < tXMax) {
+			tXMax = tYMax;
+		}
+		if (zD >= 0) {
+			tZMin = (zMin - zE)/zD;
+			tZMax = (zMax - zE)/zD;
+		}
+		else {
+			tZMin = (zMax - zE)/zD;
+			tZMax = (zMin - zE)/zD;
+		}
+		if (tXMin > tZMax || tZMin > tXMax) {
+			return false;
+		}
+		return true;
 	}
 	
 	/** 
@@ -111,12 +125,22 @@ public class BvhNode {
 	 */
 	public boolean intersects(Ray ray) {
 		
-		
+		double xMin = minBound.x;
+		double yMin = minBound.y;
+		double zMin = minBound.z;
+		double xMax = maxBound.x;
+		double yMax = maxBound.y;
+		double zMax = maxBound.z;
+		double xE = ray.origin.x;
+		double yE = ray.origin.y;
+		double zE = ray.origin.z;
+		double xD = ray.direction.x;
+		double yD = ray.direction.y;
+		double zD = ray.direction.z;
+		return intersectsSlab(xMin, xMax, xE, xD, yMin, yMax, yE, yD, zMin, zMax, zE, zD);
 		
 		
 		// TODO#A7: fill in this function.
 		// Check whether the given ray intersects the AABB of this BvhNode
-
-		return true;
 	}
 }

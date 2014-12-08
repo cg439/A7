@@ -2,6 +2,8 @@
 <!--  Horse mesh (~100K polygons, with normals)
  -->
 <scene>
+  <AccelStruct type="NaiveAccelStruct"
+/>
   <camera type="PerspectiveCamera">
     <viewPoint>4 6 8</viewPoint>
     <viewDir>-4 -6 -8</viewDir>

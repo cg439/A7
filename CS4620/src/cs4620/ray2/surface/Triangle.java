@@ -135,6 +135,17 @@ public class Triangle extends Surface {
 		// TODO#A7: Compute the bounding box and store the result in
 		// averagePosition, minBound, and maxBound.
 		
+		Vector3d v0 = owner.getPosition(index.x);
+		Vector3d v1 = owner.getPosition(index.y);
+		Vector3d v2 = owner.getPosition(index.z);
+		/*
+		float minX = 0;
+		float minY = (float) (minPt.y);
+		float minZ = (float) (minPt.z);
+		float maxX = (float) (maxPt.x);
+		float maxY = (float) (maxPt.y);
+		float maxZ = (float) (maxPt.z);
+		*/
 		minBound = new Vector3d();
 		maxBound = new Vector3d();
 		averagePosition = new Vector3d();

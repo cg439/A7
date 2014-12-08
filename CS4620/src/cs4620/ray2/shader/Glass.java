@@ -70,25 +70,23 @@ public class Glass extends Shader {
 						
 						double fresnel = fresnel(normal, ray.direction, this.refractiveIndex);
 						
-						record.surface.getShader().shade(color, scene, ray, record, depth+1);
+						//shadeRay(record.surface.getShader().shade(color, scene, ray, record, depth+1);
 					//	System.out.println(record.surface.getShader());
 					//	System.out.println(record.surface);
-						System.out.println(color);
+					//	System.out.println(color);
+					//	System.out.println(ray.origin + " " + ray.direction);
+					//	System.out.println(reflection.origin + " " + reflection.direction);
 						outIntensity.add(color.mul(1.0 - fresnel));
 						Colord reflectedColor = new Colord();
 						
-						System.out.println(fresnel);
-						IntersectionRecord reflectRecord = new IntersectionRecord();
+					//	System.out.println(fresnel);
+						//IntersectionRecord reflectRecord = new IntersectionRecord();
 						
-						boolean reflectHit = scene.getAnyIntersection(reflection);
+					//	boolean reflectHit = scene.getAnyIntersection(reflection);
 								
-						
-						if (reflectHit) {
-							scene.getFirstIntersection(reflectRecord, reflection);
-							shade(reflectedColor, scene, reflection, reflectRecord, depth+1);
-							outIntensity.add(reflectedColor.mul(fresnel));
-						}
-						System.out.println(outIntensity + " at depth " + depth);
+						RayTracer.shadeRay(reflectedColor, scene, ray, depth+1);
+					//	outIntensity.add(reflectedColor);
+					//	System.out.println(outIntensity + " at depth " + depth);
 						
 					}
 					

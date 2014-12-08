@@ -74,7 +74,7 @@ public class Glazed extends Shader {
 						
 						Colord reflectedColor = new Colord();
 						
-						IntersectionRecord reflectRecord = new IntersectionRecord();
+//						IntersectionRecord reflectRecord = new IntersectionRecord();
 						Vector3d normal = record.normal.clone();
 						
 						Ray reflection = new Ray(record.location.clone(), incoming.clone().sub(normal.clone().mul(2.0).mul(incoming.clone().dot(normal.clone()))));
@@ -83,17 +83,20 @@ public class Glazed extends Shader {
 						
 						substrate.shade(color, scene, ray, record, depth);
 						outIntensity.add(color.mul(1.0 - fresnel));
-						boolean reflectHit = scene.getAnyIntersection(reflection);
-						
-						if (reflectHit) {
-							scene.getFirstIntersection(reflectRecord, reflection);
-							System.out.println("reflected");
-							reflectRecord.surface.getShader().shade(reflectedColor, scene, reflection, reflectRecord, depth+1);
-							outIntensity.add(reflectedColor.mul(fresnel));
-						}
-						else {
-							System.out.println("No reflection");
-						}
+//						Raytracer.shadeRay()
+						RayTracer.shadeRay(reflectedColor, scene, reflection, depth+1);
+						outIntensity.add(reflectedColor.mul(fresnel));
+//						boolean reflectHit = scene.getAnyIntersection(reflection);
+//						
+//						if (reflectHit) {
+//							scene.getFirstIntersection(reflectRecord, reflection);
+//							System.out.println("reflected");
+//							reflectRecord.surface.getShader().shade(reflectedColor, scene, reflection, reflectRecord, depth+1);
+//							outIntensity.add(reflectedColor.mul(fresnel));
+//						}
+//						else {
+//							System.out.println("No reflection");
+//						}
 						
 					}
 					

@@ -94,4 +94,82 @@ public abstract class Surface {
 	public void appendRenderableSurfaces(ArrayList<Surface> in) {
 		in.add(this);
 	}
+	
+	public void getMinMax(Vector3d max, Vector3d min, Vector3d p1, Vector3d p2, Vector3d p3, Vector3d p4, Vector3d p5, Vector3d p6, Vector3d p7, Vector3d p8) {
+		tMat.mulPos(p1);
+		tMat.mulPos(p2);
+		tMat.mulPos(p3);
+		tMat.mulPos(p4);
+		tMat.mulPos(p5);
+		tMat.mulPos(p6);
+		tMat.mulPos(p7);
+		tMat.mulPos(p8);
+		float minX = (float) getMin(Integer.MAX_VALUE, p1.x, p2.x, p3.x, p4.x, p5.x, p6.x, p7.x, p8.x);
+		float minY = (float) getMin(Integer.MAX_VALUE, p1.y, p2.y, p3.y, p4.y, p5.y, p6.y, p7.y, p8.y);
+		float minZ = (float) getMin(Integer.MAX_VALUE, p1.z, p2.z, p3.z, p4.z, p5.z, p6.z, p7.z, p8.z);
+		float maxX = (float) getMax(Integer.MIN_VALUE, p1.x, p2.x, p3.x, p4.x, p5.x, p6.x, p7.x, p8.x);
+		float maxY = (float) getMax(Integer.MIN_VALUE, p1.y, p2.y, p3.y, p4.y, p5.y, p6.y, p7.y, p8.y);
+		float maxZ = (float) getMax(Integer.MIN_VALUE, p1.z, p2.z, p3.z, p4.z, p5.z, p6.z, p7.z, p8.z);
+		max.set(new Vector3d(maxX, maxY, maxZ));
+		min.set(new Vector3d(minX, minY, minZ));
+	}
+	
+	
+	private double getMin(float init, double x, double x2, double x3, double x4, double x5, double x6, double x7, double x8) {
+		double min = init;
+		if (x < min) {
+			min = x;
+		}
+		if (x2 < min) {
+			min = x2;
+		}
+		if (x3 < min) {
+			min = x3;
+		}
+		if (x4 < min) {
+			min = x4;
+		}
+		if (x5 < min) {
+			min = x5;
+		}
+		if (x6 < min) {
+			min = x6;
+		}
+		if (x7 < min) {
+			min = x7;
+		}
+		if (x8 < min) {
+			min = x8;
+		}
+		return min;
+	}
+	
+	private double getMax(float init, double x, double x2, double x3, double x4, double x5, double x6, double x7, double x8) {
+		double max = init;
+		if (x > max) {
+			max = x;
+		}
+		if (x2 > max) {
+			max = x2;
+		}
+		if (x3 > max) {
+			max = x3;
+		}
+		if (x4 > max) {
+			max = x4;
+		}
+		if (x5 > max) {
+			max = x5;
+		}
+		if (x6 > max) {
+			max = x6;
+		}
+		if (x7 > max) {
+			max = x7;
+		}
+		if (x8 > max) {
+			max = x8;
+		}
+		return max;
+	}
 }

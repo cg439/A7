@@ -152,7 +152,9 @@ public class Cylinder extends Surface {
 		// averagePosition, minBound, and maxBound.
 		// Hint: The bounding box may be transformed by a transformation matrix.
 
-
+		minBound.set(tMat.mulPos(minPt));
+		maxBound.set(tMat.mulPos(maxPt));
+		averagePosition.set(tMat.mulPos(center.clone()));
 	}
 
 	/**

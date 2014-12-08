@@ -107,13 +107,27 @@ public class Sphere extends Surface {
 	public void computeBoundingBox() {
 		// TODO#A7: Compute the bounding box and store the result in
 		// averagePosition, minBound, and maxBound.
-		Vector3d minPt = new Vector3d();
-		Vector3d maxPt = new Vector3d();
+		float minX = (float) (center.x - radius);
+		float minY = (float) (center.y - radius);
+		float minZ = (float) (center.z - radius);
+		float maxX = (float) (center.x + radius);
+		float maxY = (float) (center.y + radius);
+		float maxZ = (float) (center.z + radius);
+		Vector3d p1 = new Vector3d(minX, minY, minZ);
+		Vector3d p2 = new Vector3d(minX, maxY, minZ);
+		Vector3d p3 = new Vector3d(minX, minY, maxZ);
+		Vector3d p4 = new Vector3d(minX, maxY, maxZ);
+		Vector3d p5 = new Vector3d(maxX, minY, maxZ);
+		Vector3d p6 = new Vector3d(maxX, minY, minZ);
+		Vector3d p7 = new Vector3d(maxX, maxY, minZ);
+		Vector3d p8 = new Vector3d(maxX, maxY, maxZ);
 		
 		
+		Vector3d minPt = new Vector3d(minX, minY, minZ);
+		Vector3d maxPt = new Vector3d(maxX, maxY, maxZ);
 		minBound.set(tMat.mulPos(minPt));
 		maxBound.set(tMat.mulPos(maxPt));
-		averagePosition.set(tMat.mulPos(minPt.clone().add(maxPt).div(2f)));
+		averagePosition.set(tMat.mulPos(center.clone()));
 	}
 
 	/**

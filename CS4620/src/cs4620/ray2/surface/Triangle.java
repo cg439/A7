@@ -134,6 +134,9 @@ public class Triangle extends Surface {
 	public void computeBoundingBox() {
 		// TODO#A7: Compute the bounding box and store the result in
 		// averagePosition, minBound, and maxBound.
+		
+		
+		
 	}
 
 	/**

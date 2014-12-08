@@ -345,10 +345,21 @@ public class RayTracer {
 				// TODO#A7 Implement supersampling for antialiasing.
 				// Each pixel should have (samples*samples) subpixels.
 				
+				for(int p = 0; p < samples; p++){
+					for(int q = 0; q < samples; q++){
+						
+						cam.getRay(ray, x + (p + 0.5)/samples, y + (q + 0.5)/samples);
+						shadeRay(rayColor, scene, ray, 1);
+						pixelColor.add(rayColor);
+					}
+				}
+				
+				pixelColor.mul(sInvSqr);
+				
 			
-				cam.getRay(ray,  (double) x / width, (double) y / height);
-				shadeRay(rayColor, scene, ray, 1);
-				pixelColor.add(rayColor);
+//				cam.getRay(ray,  (double) x / width, (double) y / height);
+//				shadeRay(rayColor, scene, ray, 1);
+//				pixelColor.add(rayColor);
 			
 					
 				pixelColor.mul(exposure);

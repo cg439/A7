@@ -89,6 +89,29 @@ public class Bvh implements AccelStruct {
 		Vector3d minB = new Vector3d(Double.POSITIVE_INFINITY, Double.POSITIVE_INFINITY, Double.POSITIVE_INFINITY); 
 		Vector3d maxB = new Vector3d(Double.NEGATIVE_INFINITY, Double.NEGATIVE_INFINITY, Double.NEGATIVE_INFINITY);
 
+		for(int i = start; i < end; i++) {
+			Surface current = surfaces[i];
+			Vector3d currentMinB = current.getMinBound();
+			Vector3d currentMaxB = current.getMaxBound();
+			if (currentMinB.x < minB.x) {
+				minB.x = currentMinB.x;
+			}
+			if (currentMinB.y < minB.y) {
+				minB.y = currentMinB.y;
+			}
+			if (currentMinB.z < minB.z) {
+				minB.z = currentMinB.z;
+			}
+			if (currentMaxB.x > maxB.x) {
+				maxB.x = currentMaxB.x;
+			}
+			if (currentMaxB.y > maxB.y) {
+				maxB.y = currentMaxB.y;
+			}
+			if (currentMaxB.z > maxB.z) {
+				maxB.z = currentMaxB.z;
+			}
+		}
 
 		// ==== Step 2 ====
 		// Check for the base case. 

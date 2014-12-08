@@ -116,9 +116,9 @@ public class Triangle extends Surface {
 						.addMultiple(gamma, owner.getNormal(index.z));
 			}
 			
+			outRecord.normal.normalize();
 			outRecord.normal.set(tMat.mulDir(outRecord.normal));
 			outRecord.location.set(tMat.mulPos(outRecord.location));
-			outRecord.normal.normalize();
 			if (owner.hasUVs()) {
 				outRecord.texCoords.setZero()
 						.addMultiple(1 - beta - gamma, owner.getUV(index.x))
@@ -138,17 +138,33 @@ public class Triangle extends Surface {
 		Vector3d v0 = owner.getPosition(index.x);
 		Vector3d v1 = owner.getPosition(index.y);
 		Vector3d v2 = owner.getPosition(index.z);
-		/*
-		float minX = 0;
-		float minY = (float) (minPt.y);
-		float minZ = (float) (minPt.z);
-		float maxX = (float) (maxPt.x);
-		float maxY = (float) (maxPt.y);
-		float maxZ = (float) (maxPt.z);
-		*/
+		float maxX = (float) Math.max(v0.x, Math.max(v1.x, v2.x));
+		float maxY = (float) Math.max(v0.y, Math.max(v1.y, v2.y));
+		float maxZ = (float) Math.max(v0.z, Math.max(v1.z, v2.z));
+		float minX = (float) Math.min(v0.x, Math.min(v1.x, v2.x));
+		float minY = (float) Math.min(v0.y, Math.min(v1.y, v2.y));
+		float minZ = (float) Math.min(v0.z, Math.min(v1.z, v2.z));
+		
+		Vector3d p1 = new Vector3d(minX, minY, minZ);
+		Vector3d p2 = new Vector3d(minX, maxY, minZ);
+		Vector3d p3 = new Vector3d(minX, minY, maxZ);
+		Vector3d p4 = new Vector3d(minX, maxY, maxZ);
+		Vector3d p5 = new Vector3d(maxX, minY, maxZ);
+		Vector3d p6 = new Vector3d(maxX, minY, minZ);
+		Vector3d p7 = new Vector3d(maxX, maxY, minZ);
+		Vector3d p8 = new Vector3d(maxX, maxY, maxZ);
+		
+		Vector3d minPt = new Vector3d();
+		Vector3d maxPt = new Vector3d();
+		getMinMax(minPt, maxPt, p1, p2, p3, p4, p5, p6, p7, p8);
+		
 		minBound = new Vector3d();
 		maxBound = new Vector3d();
 		averagePosition = new Vector3d();
+		
+		minBound.set(minPt);
+		maxBound.set(maxPt);
+		averagePosition.set(minPt.clone().add(maxPt).div(2f));
 	}
 
 	/**

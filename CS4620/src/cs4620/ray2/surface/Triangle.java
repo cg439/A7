@@ -135,8 +135,9 @@ public class Triangle extends Surface {
 		// TODO#A7: Compute the bounding box and store the result in
 		// averagePosition, minBound, and maxBound.
 		
-		
-		
+		minBound = new Vector3d();
+		maxBound = new Vector3d();
+		averagePosition = new Vector3d();
 	}
 
 	/**

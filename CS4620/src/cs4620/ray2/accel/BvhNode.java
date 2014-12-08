@@ -95,7 +95,12 @@ public class BvhNode {
 			tYMin = (yMax - yE)/yD;
 			tYMax = (yMin - yE)/yD;
 		}
-		
+		if (tXMin > tYMax || tYMin > tXMax) {
+			return false;
+		}
+		else {
+			return true;
+		}
 		
 	}
 	

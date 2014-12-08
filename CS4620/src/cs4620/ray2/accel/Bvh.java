@@ -116,22 +116,36 @@ public class Bvh implements AccelStruct {
 		// ==== Step 2 ====
 		// Check for the base case. 
 		// If the range [start, end) is small enough (e.g. less than or equal to 10), just return a new leaf node.
-
+		if (end - start <= 10) {
+			return new BvhNode(minB, maxB, null, null, start, end);
+		}
 
 		// ==== Step 3 ====
 		// Figure out the widest dimension (x or y or z).
 		// If x is the widest, set widestDim = 0. If y, set widestDim = 1. If z, set widestDim = 2.
-
+		double xDif = maxB.x - minB.x;
+		double yDif = maxB.y - minB.y;
+		double zDif = maxB.z - minB.z;
+		int widestDim = -1;
+		if (xDif <= yDif && zDif <= yDif) {
+			cmp.setIndex(1);
+		}
+		else if (xDif <= zDif && yDif <= zDif) {
+			cmp.setIndex(2);
+		}
+		else {
+			cmp.setIndex(0);
+		}
 
 		// ==== Step 4 ====
 		// Sort surfaces according to the widest dimension.
-
+		Arrays.sort(surfaces, start, end, cmp);
 
 		// ==== Step 5 ====
 		// Recursively create left and right children.
 
 		
-		return new BvhNode(minB, maxB, new BvhNode(), new BvhNode(), start, end);
+		
 	}
 
 }

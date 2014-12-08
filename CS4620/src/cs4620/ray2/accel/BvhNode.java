@@ -77,12 +77,38 @@ public class BvhNode {
 		return child[0] == null && child[1] == null; 
 	}
 	
+	public boolean intersectsSlab(double xMin, double xMax, double xE, double xD, double yMin, double yMax,  double yE, double yD) {
+		double tXMin, tXMax, tYMin, tYMax;
+		if (xD >= 0) {
+			tXMin = (xMin - xE)/xD;
+			tXMax = (xMax - xE)/xD;
+		}
+		else {
+			tXMin = (xMax - xE)/xD;
+			tXMax = (xMin - xE)/xD;
+		}
+		if (yD >= 0) {
+			tYMin = (yMin - yE)/yD;
+			tYMax = (yMax - yE)/yD;
+		}
+		else {
+			tYMin = (yMax - yE)/yD;
+			tYMax = (yMin - yE)/yD;
+		}
+		
+		
+	}
+	
 	/** 
 	 * Check if the ray intersects the bounding box.
 	 * @param ray
 	 * @return true if ray intersects the bounding box
 	 */
 	public boolean intersects(Ray ray) {
+		
+		
+		
+		
 		// TODO#A7: fill in this function.
 		// Check whether the given ray intersects the AABB of this BvhNode
 

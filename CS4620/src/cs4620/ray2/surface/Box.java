@@ -92,6 +92,10 @@ public class Box extends Surface {
 		Vector3d maxPt = new Vector3d();
 		getMinMax(minPt, maxPt, p1, p2, p3, p4, p5, p6, p7, p8);
 		
+		minBound = new Vector3d();
+		maxBound = new Vector3d();
+		averagePosition = new Vector3d();
+		
 		minBound.set(minPt);
 		maxBound.set(maxPt);
 		averagePosition.set(minPt.clone().add(maxPt).div(2f));

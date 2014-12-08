@@ -68,26 +68,35 @@ public class Glass extends Shader {
 						
 						Ray reflection = new Ray(record.location.clone(), incoming.clone().sub(normal.clone().mul(2.0).mul(incoming.clone().dot(normal.clone()))));
 						
-						
 						double fresnel = fresnel(normal, ray.direction, this.refractiveIndex);
 						
-						record.surface.getShader().shade(color, scene, shadowRay, record, depth+1);
+						record.surface.getShader().shade(color, scene, ray, record, depth+1);
+					//	System.out.println(record.surface.getShader());
+					//	System.out.println(record.surface);
+						System.out.println(color);
 						outIntensity.add(color.mul(1.0 - fresnel));
 						Colord reflectedColor = new Colord();
 						
+						System.out.println(fresnel);
 						IntersectionRecord reflectRecord = new IntersectionRecord();
 						
-						boolean reflectHit = scene.getFirstIntersection(reflectRecord, shadowRay);
+						boolean reflectHit = scene.getAnyIntersection(reflection);
+								
 						
 						if (reflectHit) {
+							scene.getFirstIntersection(reflectRecord, reflection);
 							shade(reflectedColor, scene, reflection, reflectRecord, depth+1);
+							outIntensity.add(reflectedColor.mul(fresnel));
 						}
-						outIntensity.add(reflectedColor.mul(fresnel));
+						System.out.println(outIntensity + " at depth " + depth);
+						
 					}
 					
 				}
 			}
 		}
+	
+		//outIntensity.set(new Colord(1,1,1));
 	}	
 
 }

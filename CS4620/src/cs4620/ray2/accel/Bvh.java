@@ -69,10 +69,16 @@ public class Bvh implements AccelStruct {
 				IntersectionRecord tempRecord = new IntersectionRecord();
 				boolean intersected = current.intersect(tempRecord, rayIn);
 				if (intersected && anyIntersection) {
-					
+					outRecord.set(tempRecord);
 					return true;
 				}
 				else if (intersected) {
+					if (!ret) {
+						outRecord.set(tempRecord);
+					}
+					else if (tempRecord.t < outRecord.t) {
+						outRecord.set(tempRecord);
+					}
 					ret = true;
 				}
 			}

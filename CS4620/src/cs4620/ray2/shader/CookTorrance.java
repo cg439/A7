@@ -86,8 +86,8 @@ public class CookTorrance extends Shader {
 					Vector3d V = outgoing.clone();
 					
 					 float r = (float) ray.origin.clone().sub(record.location).len();
-					  Vector3d L = light.getDirection(record.location).normalize();
-					  Vector3d H = L.clone().add(V).normalize();
+					  Vector3d L = incoming.clone();
+					  Vector3d H = halfVec.clone();
 					  float nDotL = (float) N.dot(L);
 					  float nDotV = (float) N.dot(V);
 					  float nDotH = (float) N.dot(H);
@@ -130,7 +130,7 @@ public class CookTorrance extends Shader {
 					  Vector3d a = ks.clone().mul(fresnal).mul(attenuation).mul(distribution);
 					  float b = (float) (nDotV * nDotL * Math.PI);
 					  Vector3d c = a.div(b).add(kd);
-					color.set(c.mul(Math.max(nDotL, 0.0)).mul(light.intensity.div(r*r)));
+					color.set(c.mul(Math.max(nDotL, 0.0)).mul(light.intensity.div(rSq)));
 					//  finalColor += vec4(lightIntensity[i], 0.0) * (Idiff + Ispec) / (r*r) + vec4(ambientLightIntensity, 0.0) * Iamb;
 					outIntensity.add(color);
 				}

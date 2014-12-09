@@ -65,18 +65,32 @@ public class Glazed extends Shader {
 			Colord reflectedColor = new Colord();
 			
 			Vector3d normal = record.normal.clone();
+			Vector3d d = ray.direction.clone();
+			double nDotV = normal.dot(outgoing);
 			
-			Ray reflection = new Ray(record.location.clone(), ray.direction.clone().sub(normal.clone().mul(2.0).mul(ray.direction.clone().dot(normal.clone()))).normalize());
-			reflection.start = Ray.EPSILON;
-			reflection.end = Double.POSITIVE_INFINITY;
-			double fresnel = fresnel(normal, outgoing, this.refractiveIndex);
+			double n1, n2;
+			double fresnel;
+			if (nDotV < 0) {	
+				n1 = refractiveIndex;
+					n2 = 1f;
+				fresnel = fresnel(normal, outgoing, n2);	
+		//		normal.negate();
+				
+			}
+			else {
+				n2 = refractiveIndex;
+				n1 = 1f;
+				fresnel = fresnel(normal, outgoing, n2);
+				Ray reflection = new Ray(record.location.clone(), ray.direction.clone().sub(normal.clone().mul(2.0).mul(ray.direction.clone().dot(normal.clone()))).normalize());
+				reflection.start = Ray.EPSILON;
+				reflection.end = Double.POSITIVE_INFINITY;
+				RayTracer.shadeRay(reflectedColor, scene, reflection, depth+1);
+				outIntensity.add(reflectedColor.mul(fresnel));
+			}
 			
 			substrate.shade(color, scene, ray, record, depth);
 			outIntensity.add(color.mul(1.0 - fresnel));
 
-			RayTracer.shadeRay(reflectedColor, scene, reflection, depth+1);
-			outIntensity.add(reflectedColor.mul(fresnel));
-			
 		}
 	}
 }

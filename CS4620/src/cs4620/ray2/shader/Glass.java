@@ -45,7 +45,6 @@ public class Glass extends Shader {
 	@Override
 	public void shade(Colord outIntensity, Scene scene, Ray ray, IntersectionRecord record, int depth) {
 
-
 		Vector3d outgoing = new Vector3d();
 		outgoing.set(ray.origin).sub(record.location).normalize();
 
@@ -61,11 +60,13 @@ public class Glass extends Shader {
 			Vector3d normal = record.normal.clone();
 			
 			Ray reflection = new Ray(record.location.clone(), ray.direction.clone().sub(normal.clone().mul(2.0).mul(ray.direction.clone().dot(normal.clone()))));
-			reflection.makeOffsetSegment(Double.POSITIVE_INFINITY);
-			double fresnel = fresnel(normal, ray.direction, this.refractiveIndex);
+			reflection.start = Ray.EPSILON;
+			reflection.end = Double.POSITIVE_INFINITY;
+			//	reflection.makeOffsetSegment(Double.POSITIVE_INFINITY);
+			double fresnel = fresnel(normal, outgoing, this.refractiveIndex);
 			
-			//record.surface.getShader().shade(color, scene, ray, record, depth+1);
-			outIntensity.add(color.mul(1.0 - fresnel));
+//			substrate.shade(color, scene, ray, record, depth);
+	//		outIntensity.add(color.mul(1.0 - fresnel));
 //						Raytracer.shadeRay()
 			RayTracer.shadeRay(reflectedColor, scene, reflection, depth+1);
 			outIntensity.add(reflectedColor.mul(fresnel));

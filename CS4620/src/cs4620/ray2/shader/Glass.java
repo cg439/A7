@@ -61,24 +61,47 @@ public class Glass extends Shader {
 			Vector3d d = ray.direction.clone();
 			Vector3d n = record.normal.clone();
 			Vector3d t = new Vector3d();
-			double dDotN =  d.dot(n);
 			double nDotV = normal.dot(outgoing);
 			
-			if (nDotV < 0) {
+			double n1, n2;
+			double fresnel;
+			if (nDotV < 0) {	
+				n1 = refractiveIndex;
+					n2 = 1f;
+					
 				normal.negate();
+				n.negate();
+				fresnel = fresnel(normal, outgoing, n2);
 			}
+			else {
+				n2 = refractiveIndex;
+				n1 = 1f;
+				fresnel = fresnel(normal, outgoing, n2);
+			}
+			double dDotN =  d.dot(n);
 			
-			double dscr = 1 - ((1-(Math.pow(dDotN,2))/(refractiveIndex*refractiveIndex)));
-			double fresnel = fresnel(normal, outgoing, this.refractiveIndex);
+			double numerator = n1*n1*(1 - dDotN*dDotN);
+			double denominator = n2*n2;
+			
+			
+			
+			double dscr = 1 - numerator/denominator;
+			
 			if (dscr >= 0) {
 				
-				t.set(d. clone(). sub(n. clone(). mul(dDotN). div(refractiveIndex)));
-				t.sub(n.clone().mul(Math.sqrt(dscr)));
+				Vector3d first = d. clone(). sub(n. clone(). mul(dDotN). div(n2)).mul(n1);
+				//t.set(d. clone(). sub(n. clone(). mul(dDotN). div(refractiveIndex)));
+			
+				Vector3d second =  (dscr == 0) ? new Vector3d() : n.clone().mul(-1*Math.sqrt(dscr));
+				System.out.println(second);
+				//t.set(first);
+				t.set(first.add(second));
+			//	t.set(d. clone(). sub(n. clone(). mul(dDotN). div(refractiveIndex)).sub(n.clone().mul(Math.sqrt(dscr))));
 				t.normalize();
 				Ray refraction = new Ray(record.location.clone(), t);
 				refraction.start = Ray.EPSILON;
-			//	refraction.end = Double.POSITIVE_INFINITY;
-				refraction.end = ray.end;
+				refraction.end = Double.POSITIVE_INFINITY;
+			//	refraction.end = ray.end;
 				Colord refractedColor = new Colord();
 				RayTracer.shadeRay(refractedColor, scene, refraction, depth+1);
 				outIntensity.add(refractedColor.mul(1.0 - fresnel));

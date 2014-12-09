@@ -67,38 +67,45 @@ public class Cubemap {
 			float u = 1 - (float) ((dir.y + dir.x)/(dir.x*2));
 			float v = 1 - (float) ((dir.z + dir.x)/(dir.x*2));
 			if (dir.x > 0) {
-				x = (int) (u * width);
-				y = (int) (v * height);
+				x = 2*blockSz;
+				y = 2*blockSz;
 			}
 			else {
-				x = (int) (u * width);
-				y = (int) (v * height);
+				x = 0;
+				y = 2 * blockSz;
 			}
+			x += u*blockSz;
+			y += v*blockSz;
 		}
 		else if (abY >= abX && abY >= abZ) {
 			float u = 1 - (float) ((dir.y + dir.x)/(dir.y*2));
 			float v = 1 - (float) ((dir.z + dir.y)/(dir.y*2));
 			if (dir.y > 0) {
-				x = (int) (u * width);
-				y = (int) (v * height);
+				x = blockSz;
+				y = 3 *blockSz;
 			}
 			else {
-				x = (int) (u * width);
-				y = (int) (v * height);
-			}		
+				x = blockSz;
+				y = blockSz;
+			}	
+			x += u*blockSz;
+			y += v*blockSz;
 		}
 		else if (abZ >= abY && abZ >= abX) {
 			float u = 1 - (float) ((dir.z + dir.x)/(dir.z*2));
 			float v = 1 - (float) ((dir.z + dir.y)/(dir.z*2));
 			if (dir.z > 0) {
-				x = (int) (u * width);
-				y = (int) (v * height);
+				x = blockSz;
+				y = 0;
 			}
 			else {
-				x = (int) (u * width);
-				y = (int) (v * height);
+				x = blockSz;
+				y = 2*blockSz;
 			}
+			x += u*blockSz;
+			y += v*blockSz;
 		}
+		
 		System.out.println(imageData.length);
 		System.out.println(width);
 		outRadiance.x = imageData[(int) (3 *(x + width* y))];

@@ -53,39 +53,31 @@ public class Glazed extends Shader {
 	public void shade(Colord outIntensity, Scene scene, Ray ray, IntersectionRecord record, int depth) {
 		// TODO#A7: fill in this function.
 		
-		Vector3d incoming = new Vector3d();
 		Vector3d outgoing = new Vector3d();
 		outgoing.set(ray.origin).sub(record.location).normalize();
 
 		Colord color = new Colord();
-		Ray shadowRay = new Ray();
 		
 		outIntensity.setZero();
-		for(Light light : scene.getLights()) {
-			if(!isShadowed(scene, light, record, shadowRay)) {
-				incoming.set(light.getDirection(record.location)).normalize();
-				
-				double dotProd = record.normal.dot(incoming);
-				if (dotProd <= 0)
-					continue;
-				else {
-					
-					if (depth <= RayTracer.MAX_DEPTH) {
-						
-						Colord reflectedColor = new Colord();
-						
+	
+		if (depth <= RayTracer.MAX_DEPTH) {
+			
+			Colord reflectedColor = new Colord();
+			
 //						IntersectionRecord reflectRecord = new IntersectionRecord();
-						Vector3d normal = record.normal.clone();
-						
-						Ray reflection = new Ray(record.location.clone(), incoming.clone().sub(normal.clone().mul(2.0).mul(incoming.clone().dot(normal.clone()))));
-						
-						double fresnel = fresnel(normal, ray.direction, this.refractiveIndex);
-						
-						substrate.shade(color, scene, ray, record, depth);
-						outIntensity.add(color.mul(1.0 - fresnel));
+			Vector3d normal = record.normal.clone();
+			
+			Ray reflection = new Ray(record.location.clone(), ray.direction.clone().sub(normal.clone().mul(2.0).mul(ray.direction.clone().dot(normal.clone()))));
+			reflection.start = Ray.EPSILON;
+			reflection.end = Double.POSITIVE_INFINITY;
+			//	reflection.makeOffsetSegment(Double.POSITIVE_INFINITY);
+			double fresnel = fresnel(normal, outgoing, this.refractiveIndex);
+			
+			substrate.shade(color, scene, ray, record, depth);
+			outIntensity.add(color.mul(1.0 - fresnel));
 //						Raytracer.shadeRay()
-						RayTracer.shadeRay(reflectedColor, scene, reflection, depth+1);
-						outIntensity.add(reflectedColor.mul(fresnel));
+			RayTracer.shadeRay(reflectedColor, scene, reflection, depth+1);
+			outIntensity.add(reflectedColor.mul(fresnel));
 //						boolean reflectHit = scene.getAnyIntersection(reflection);
 //						
 //						if (reflectHit) {
@@ -97,11 +89,7 @@ public class Glazed extends Shader {
 //						else {
 //							System.out.println("No reflection");
 //						}
-						
-					}
-					
-				}
-			}
+			
 		}
 	}
 }

@@ -57,7 +57,14 @@ public class Cubemap {
 	public void evaluate(Vector3d dir, Colord outRadiance) {
 		//TODO#A7 Look up for the radiance of the environment mapping in a given direction
 		//don't forget to multiply the outRadiance by scaleFactor
+		float x = 0,y = 0;
 		
+		
+		
+		outRadiance.x = imageData[(int) (3 * (x + width* y))];
+		outRadiance.y = imageData[(int) (3 * (x + width* y)) + 1];
+		outRadiance.z = imageData[(int) (3 * (x + width* y)) + 2];
+		outRadiance.mul(scaleFactor);
 	}
 	
 	public void generate(Vector2d seed, Vector3d outDirection) {

@@ -57,11 +57,51 @@ public class Cubemap {
 	public void evaluate(Vector3d dir, Colord outRadiance) {
 		//TODO#A7 Look up for the radiance of the environment mapping in a given direction
 		//don't forget to multiply the outRadiance by scaleFactor
-		float x = 0,y = 0;
+		int x = 0,y = 0;
 		
+		float abX = (float) Math.abs(dir.x);
+		float abY = (float) Math.abs(dir.y);
+		float abZ = (float) Math.abs(dir.z);
 		
-		
-		outRadiance.x = imageData[(int) (3 * (x + width* y))];
+		if (abX >= abY && abX >= abZ) {
+			float u = 1 - (float) ((dir.y + dir.x)/(dir.x*2));
+			float v = 1 - (float) ((dir.z + dir.x)/(dir.x*2));
+			if (dir.x > 0) {
+				x = (int) (u * width);
+				y = (int) (v * height);
+			}
+			else {
+				x = (int) (u * width);
+				y = (int) (v * height);
+			}
+		}
+		else if (abY >= abX && abY >= abZ) {
+			float u = 1 - (float) ((dir.y + dir.x)/(dir.y*2));
+			float v = 1 - (float) ((dir.z + dir.y)/(dir.y*2));
+			if (dir.y > 0) {
+				x = (int) (u * width);
+				y = (int) (v * height);
+			}
+			else {
+				x = (int) (u * width);
+				y = (int) (v * height);
+			}		
+		}
+		else if (abZ >= abY && abZ >= abX) {
+			float u = 1 - (float) ((dir.z + dir.x)/(dir.z*2));
+			float v = 1 - (float) ((dir.z + dir.y)/(dir.z*2));
+			if (dir.z > 0) {
+				x = (int) (u * width);
+				y = (int) (v * height);
+			}
+			else {
+				x = (int) (u * width);
+				y = (int) (v * height);
+			}
+		}
+		System.out.println(imageData.length);
+		System.out.println(width);
+		outRadiance.x = imageData[(int) (3 *(x + width* y))];
 		outRadiance.y = imageData[(int) (3 * (x + width* y)) + 1];
 		outRadiance.z = imageData[(int) (3 * (x + width* y)) + 2];
 		outRadiance.mul(scaleFactor);
